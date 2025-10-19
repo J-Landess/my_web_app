@@ -130,7 +130,7 @@ const Welcome: React.FC = () => {
           {/* Video 1 */}
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="card"
+            className="card video-card"
             style={{ padding: '20px', textAlign: 'center' }}
           >
             <h3 style={{ color: 'var(--neon-lime)', marginBottom: '15px' }}>
@@ -161,7 +161,7 @@ const Welcome: React.FC = () => {
           {/* Video 2 */}
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="card"
+            className="card video-card"
             style={{ padding: '20px', textAlign: 'center' }}
           >
             <h3 style={{ color: 'var(--neon-cyan)', marginBottom: '15px' }}>
@@ -192,7 +192,7 @@ const Welcome: React.FC = () => {
           {/* Video 3 */}
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="card"
+            className="card video-card"
             style={{ padding: '20px', textAlign: 'center' }}
           >
             <h3 style={{ color: 'var(--neon-purple)', marginBottom: '15px' }}>

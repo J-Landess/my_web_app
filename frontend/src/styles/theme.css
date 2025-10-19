@@ -1,11 +1,21 @@
-/* Wiseman Psychedelics Theme - Dark with Neon Accents */
+/* Wiseman Psychedelics Theme - Dark Rainbow with Motion Effects */
 
 :root {
-  /* Dark psychedelic color palette */
+  /* Dark rainbow color palette */
   --bg-primary: #0a0015;
   --bg-secondary: #1a0033;
   --bg-tertiary: #0d1b2a;
   --bg-card: rgba(26, 0, 51, 0.8);
+  
+  /* Dark rainbow gradient colors */
+  --rainbow-1: #1a0033;  /* Deep purple */
+  --rainbow-2: #2d0052;  /* Dark violet */
+  --rainbow-3: #1a0a3d;  /* Dark indigo */
+  --rainbow-4: #0a1a33;  /* Dark blue */
+  --rainbow-5: #0a3322;  /* Dark teal */
+  --rainbow-6: #1a3300;  /* Dark green */
+  --rainbow-7: #332200;  /* Dark amber */
+  --rainbow-8: #330a0a;  /* Dark red */
   
   /* Neon accent colors */
   --neon-cyan: #00f0ff;
@@ -19,11 +29,20 @@
   --text-secondary: #b8b8b8;
   --text-accent: var(--neon-cyan);
   
-  /* Glow effects */
+  /* Enhanced glow effects */
   --glow-cyan: 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-cyan), 0 0 60px var(--neon-cyan);
   --glow-magenta: 0 0 20px var(--neon-magenta), 0 0 40px var(--neon-magenta), 0 0 60px var(--neon-magenta);
   --glow-lime: 0 0 20px var(--neon-lime), 0 0 40px var(--neon-lime), 0 0 60px var(--neon-lime);
   --glow-purple: 0 0 20px var(--neon-purple), 0 0 40px var(--neon-purple), 0 0 60px var(--neon-purple);
+  
+  /* Rainbow glow effects */
+  --rainbow-glow: 0 0 30px var(--rainbow-1), 0 0 60px var(--rainbow-3), 0 0 90px var(--rainbow-5);
+  --rainbow-border: linear-gradient(45deg, var(--rainbow-1), var(--rainbow-3), var(--rainbow-5), var(--rainbow-7), var(--rainbow-1));
+  
+  /* Animation timing */
+  --transition-fast: 0.2s ease-out;
+  --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-dramatic: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 * {
@@ -38,9 +57,10 @@ body {
   color: var(--text-primary);
   min-height: 100vh;
   overflow-x: hidden;
+  position: relative;
 }
 
-/* Animated background */
+/* Dramatic animated rainbow background */
 body::before {
   content: '';
   position: fixed;
@@ -49,16 +69,60 @@ body::before {
   width: 100%;
   height: 100%;
   background: 
-    radial-gradient(circle at 20% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(57, 255, 20, 0.1) 0%, transparent 50%);
-  animation: backgroundShift 20s ease-in-out infinite;
+    radial-gradient(circle at 20% 80%, var(--rainbow-1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, var(--rainbow-3) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, var(--rainbow-5) 0%, transparent 50%),
+    radial-gradient(circle at 60% 60%, var(--rainbow-7) 0%, transparent 50%);
+  animation: rainbowShift 15s ease-in-out infinite;
+  z-index: -2;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    conic-gradient(from 0deg at 50% 50%, 
+      var(--rainbow-1) 0deg, 
+      var(--rainbow-2) 45deg, 
+      var(--rainbow-3) 90deg, 
+      var(--rainbow-4) 135deg, 
+      var(--rainbow-5) 180deg, 
+      var(--rainbow-6) 225deg, 
+      var(--rainbow-7) 270deg, 
+      var(--rainbow-8) 315deg, 
+      var(--rainbow-1) 360deg);
+  opacity: 0.03;
+  animation: rainbowRotate 25s linear infinite;
   z-index: -1;
 }
 
-@keyframes backgroundShift {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+@keyframes rainbowShift {
+  0%, 100% { 
+    opacity: 0.8;
+    transform: scale(1) rotate(0deg);
+  }
+  25% { 
+    opacity: 0.6;
+    transform: scale(1.1) rotate(90deg);
+  }
+  50% { 
+    opacity: 0.9;
+    transform: scale(0.9) rotate(180deg);
+  }
+  75% { 
+    opacity: 0.7;
+    transform: scale(1.05) rotate(270deg);
+  }
+}
+
+@keyframes rainbowRotate {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.1); }
+  100% { transform: rotate(360deg) scale(1); }
 }
 
 /* Container */
@@ -68,22 +132,75 @@ body::before {
   padding: 0 20px;
 }
 
-/* Cards */
+/* Cards with dramatic rainbow effects */
 .card {
   background: var(--bg-card);
-  border: 1px solid rgba(0, 240, 255, 0.3);
+  border: 2px solid transparent;
   border-radius: 15px;
   padding: 30px;
   margin: 20px 0;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(15px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  will-change: transform, filter, box-shadow;
+  transition: var(--transition-smooth);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--rainbow-border);
+  border-radius: 15px;
+  padding: 2px;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: var(--transition-smooth);
+  z-index: -1;
 }
 
 .card:hover {
-  border-color: var(--neon-cyan);
-  box-shadow: var(--glow-cyan), 0 8px 32px rgba(0, 0, 0, 0.5);
-  transform: translateY(-5px);
+  transform: translateY(-8px) perspective(1000px) rotateX(5deg) rotateY(5deg);
+  filter: blur(0px) brightness(1.1);
+  box-shadow: var(--rainbow-glow), 0 20px 60px rgba(0, 0, 0, 0.6);
+  will-change: transform, filter, box-shadow;
+}
+
+.card:hover::before {
+  opacity: 1;
+  animation: rainbowBorderPulse 2s ease-in-out infinite;
+}
+
+.card:hover::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, transparent, var(--rainbow-1), transparent, var(--rainbow-3), transparent);
+  animation: rainbowSweep 3s linear infinite;
+  opacity: 0.1;
+  z-index: -1;
+}
+
+@keyframes rainbowBorderPulse {
+  0%, 100% { 
+    background: linear-gradient(45deg, var(--rainbow-1), var(--rainbow-3), var(--rainbow-5), var(--rainbow-7), var(--rainbow-1));
+  }
+  50% { 
+    background: linear-gradient(45deg, var(--rainbow-8), var(--rainbow-2), var(--rainbow-4), var(--rainbow-6), var(--rainbow-8));
+  }
+}
+
+@keyframes rainbowSweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* Forms */
@@ -109,21 +226,55 @@ body::before {
   border-radius: 8px;
   color: var(--text-primary);
   font-size: 1rem;
-  transition: all 0.3s ease;
+  position: relative;
+  will-change: transform, filter, box-shadow;
+  transition: var(--transition-smooth);
+  backdrop-filter: blur(10px);
+}
+
+.form-input::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--rainbow-border);
+  border-radius: 8px;
+  padding: 2px;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: var(--transition-smooth);
+  z-index: -1;
 }
 
 .form-input:focus {
   outline: none;
-  border-color: var(--neon-cyan);
-  box-shadow: var(--glow-cyan);
+  border-color: transparent;
   background: rgba(0, 0, 0, 0.5);
+  transform: translateY(-2px) perspective(1000px) rotateX(2deg);
+  filter: blur(0px) brightness(1.1);
+  box-shadow: var(--glow-cyan), 0 10px 30px rgba(0, 240, 255, 0.3);
+  will-change: transform, filter, box-shadow;
+}
+
+.form-input:focus::before {
+  opacity: 1;
+  animation: rainbowBorderFlow 2s ease-in-out infinite;
+}
+
+.form-input:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 5px 15px rgba(0, 240, 255, 0.2);
 }
 
 .form-input::placeholder {
   color: var(--text-secondary);
 }
 
-/* Buttons */
+/* Buttons with dramatic motion effects */
 .btn {
   padding: 12px 24px;
   border: none;
@@ -133,40 +284,125 @@ body::before {
   text-transform: uppercase;
   letter-spacing: 1px;
   cursor: pointer;
-  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  will-change: transform, filter, box-shadow;
+  transition: var(--transition-smooth);
+  backdrop-filter: blur(10px);
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: var(--transition-smooth);
+}
+
+.btn:hover::before {
+  left: 100%;
 }
 
 .btn-primary {
   background: linear-gradient(45deg, var(--neon-cyan), var(--neon-blue));
   color: var(--bg-primary);
   box-shadow: 0 4px 15px rgba(0, 240, 255, 0.3);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--rainbow-border);
+  border-radius: 8px;
+  padding: 2px;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: var(--transition-smooth);
+  z-index: -1;
 }
 
 .btn-primary:hover {
-  box-shadow: var(--glow-cyan);
-  transform: translateY(-2px);
+  transform: translateY(-4px) perspective(1000px) rotateX(10deg) scale(1.05);
+  filter: blur(0px) brightness(1.2) saturate(1.3);
+  box-shadow: var(--glow-cyan), 0 15px 40px rgba(0, 240, 255, 0.5);
+  will-change: transform, filter, box-shadow;
+}
+
+.btn-primary:hover::after {
+  opacity: 1;
+  animation: rainbowBorderFlow 1.5s ease-in-out infinite;
 }
 
 .btn-secondary {
   background: linear-gradient(45deg, var(--neon-magenta), var(--neon-purple));
   color: var(--text-primary);
   box-shadow: 0 4px 15px rgba(255, 0, 255, 0.3);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.btn-secondary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--rainbow-border);
+  border-radius: 8px;
+  padding: 2px;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: var(--transition-smooth);
+  z-index: -1;
 }
 
 .btn-secondary:hover {
-  box-shadow: var(--glow-magenta);
-  transform: translateY(-2px);
+  transform: translateY(-4px) perspective(1000px) rotateX(10deg) scale(1.05);
+  filter: blur(0px) brightness(1.2) saturate(1.3);
+  box-shadow: var(--glow-magenta), 0 15px 40px rgba(255, 0, 255, 0.5);
+  will-change: transform, filter, box-shadow;
+}
+
+.btn-secondary:hover::after {
+  opacity: 1;
+  animation: rainbowBorderFlow 1.5s ease-in-out infinite;
+}
+
+@keyframes rainbowBorderFlow {
+  0%, 100% { 
+    background: linear-gradient(45deg, var(--rainbow-1), var(--rainbow-3), var(--rainbow-5), var(--rainbow-7), var(--rainbow-1));
+  }
+  50% { 
+    background: linear-gradient(45deg, var(--rainbow-8), var(--rainbow-2), var(--rainbow-4), var(--rainbow-6), var(--rainbow-8));
+  }
 }
 
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
   transform: none;
+  filter: none;
 }
 
-/* Badge */
+.btn:disabled:hover {
+  transform: none;
+  filter: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Badge with dramatic rainbow effects */
 .badge {
   display: inline-block;
   padding: 8px 16px;
@@ -177,8 +413,58 @@ body::before {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
-  animation: pulse 2s ease-in-out infinite;
-  box-shadow: var(--glow-lime);
+  position: relative;
+  overflow: hidden;
+  will-change: transform, filter, box-shadow;
+  transition: var(--transition-smooth);
+  backdrop-filter: blur(10px);
+}
+
+.badge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--rainbow-border);
+  border-radius: 20px;
+  padding: 2px;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: var(--transition-smooth);
+  z-index: -1;
+}
+
+.badge::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, transparent, var(--rainbow-1), transparent, var(--rainbow-3), transparent);
+  animation: rainbowSweep 3s linear infinite;
+  opacity: 0;
+  z-index: -1;
+}
+
+.badge:hover {
+  transform: scale(1.1) perspective(1000px) rotateX(10deg) rotateY(5deg);
+  filter: blur(0px) brightness(1.3) saturate(1.5);
+  box-shadow: var(--glow-lime), 0 15px 40px rgba(57, 255, 20, 0.6);
+  will-change: transform, filter, box-shadow;
+  animation: dramaticPulse 1s ease-in-out infinite;
+}
+
+.badge:hover::before {
+  opacity: 1;
+  animation: rainbowBorderFlow 1s ease-in-out infinite;
+}
+
+.badge:hover::after {
+  opacity: 0.2;
 }
 
 @keyframes pulse {
@@ -186,21 +472,52 @@ body::before {
   50% { transform: scale(1.05); }
 }
 
-/* Navigation */
+@keyframes dramaticPulse {
+  0%, 100% { 
+    transform: scale(1.1) perspective(1000px) rotateX(10deg) rotateY(5deg);
+    filter: blur(0px) brightness(1.3) saturate(1.5);
+  }
+  50% { 
+    transform: scale(1.15) perspective(1000px) rotateX(15deg) rotateY(8deg);
+    filter: blur(0px) brightness(1.5) saturate(1.8);
+  }
+}
+
+/* Navigation with dramatic effects */
 .nav {
   background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(0, 240, 255, 0.3);
+  backdrop-filter: blur(15px);
+  border-bottom: 2px solid transparent;
   padding: 15px 0;
   position: sticky;
   top: 0;
   z-index: 100;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--rainbow-border);
+  padding: 2px;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0.3;
+  animation: rainbowBorderPulse 4s ease-in-out infinite;
+  z-index: -1;
 }
 
 .nav-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
 .nav-brand {
@@ -208,6 +525,16 @@ body::before {
   font-weight: bold;
   color: var(--neon-cyan);
   text-shadow: var(--glow-cyan);
+  position: relative;
+  will-change: transform, filter;
+  transition: var(--transition-smooth);
+}
+
+.nav-brand:hover {
+  transform: scale(1.05) perspective(1000px) rotateX(5deg);
+  filter: blur(0px) brightness(1.2);
+  text-shadow: var(--glow-cyan), 0 0 20px var(--neon-cyan);
+  will-change: transform, filter;
 }
 
 .nav-links {
@@ -220,13 +547,41 @@ body::before {
   text-decoration: none;
   padding: 8px 16px;
   border-radius: 5px;
-  transition: all 0.3s ease;
+  position: relative;
+  will-change: transform, filter, background;
+  transition: var(--transition-smooth);
+  backdrop-filter: blur(5px);
+}
+
+.nav-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--rainbow-border);
+  border-radius: 5px;
+  padding: 1px;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: var(--transition-smooth);
+  z-index: -1;
 }
 
 .nav-link:hover {
   color: var(--neon-cyan);
   background: rgba(0, 240, 255, 0.1);
   text-shadow: 0 0 10px var(--neon-cyan);
+  transform: translateY(-2px) perspective(1000px) rotateX(5deg);
+  filter: blur(0px) brightness(1.2);
+  will-change: transform, filter, background;
+}
+
+.nav-link:hover::before {
+  opacity: 1;
+  animation: rainbowBorderFlow 1.5s ease-in-out infinite;
 }
 
 /* Page transitions */
@@ -252,6 +607,51 @@ body::before {
   transition: opacity 300ms, transform 300ms;
 }
 
+/* Performance optimizations */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* GPU acceleration for smooth animations */
+.card, .btn, .form-input, .nav-link, .badge {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Smooth crop effects for video cards */
+.video-card {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  transition: clip-path var(--transition-smooth);
+}
+
+.video-card:hover {
+  clip-path: polygon(5% 5%, 95% 5%, 95% 95%, 5% 95%);
+}
+
+/* Enhanced loading states */
+.loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .container {
@@ -271,6 +671,15 @@ body::before {
   .nav-links {
     flex-wrap: wrap;
     justify-content: center;
+  }
+  
+  /* Reduce motion on mobile for better performance */
+  .card:hover {
+    transform: translateY(-4px);
+  }
+  
+  .btn:hover {
+    transform: translateY(-2px) scale(1.02);
   }
 }
 
