@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AnimatePresence } from 'framer-motion';
 import './styles/theme.css';
 import './styles/navbar.css';
+import ErrorBoundary from './components/ErrorBoundary';
 import Register from './components/Register';
 import Login from './components/Login';
 import Layout from './components/Layout';
@@ -14,63 +15,65 @@ import Payment from './pages/Payment';
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <div className="App">
-        <AnimatePresence mode="wait">
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Navigate to="/login" replace />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            
-            {/* Protected Routes with Layout */}
-            <Route 
-              path="/home" 
-              element={
-                <PrivateRoute>
-                  <Layout />
-                </PrivateRoute>
-              } 
-            >
-              <Route index element={<Home />} />
-            </Route>
-            
-            <Route 
-              path="/about" 
-              element={
-                <PrivateRoute>
-                  <Layout />
-                </PrivateRoute>
-              } 
-            >
-              <Route index element={<About />} />
-            </Route>
-            
-            <Route 
-              path="/contact" 
-              element={
-                <PrivateRoute>
-                  <Layout />
-                </PrivateRoute>
-              } 
-            >
-              <Route index element={<Contact />} />
-            </Route>
-            
-            <Route 
-              path="/payment" 
-              element={
-                <PrivateRoute>
-                  <Layout />
-                </PrivateRoute>
-              } 
-            >
-              <Route index element={<Payment />} />
-            </Route>
-          </Routes>
-        </AnimatePresence>
-      </div>
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <div className="App">
+          <AnimatePresence mode="wait">
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<Navigate to="/login" replace />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              
+              {/* Protected Routes with Layout */}
+              <Route 
+                path="/home" 
+                element={
+                  <PrivateRoute>
+                    <Layout />
+                  </PrivateRoute>
+                } 
+              >
+                <Route index element={<Home />} />
+              </Route>
+              
+              <Route 
+                path="/about" 
+                element={
+                  <PrivateRoute>
+                    <Layout />
+                  </PrivateRoute>
+                } 
+              >
+                <Route index element={<About />} />
+              </Route>
+              
+              <Route 
+                path="/contact" 
+                element={
+                  <PrivateRoute>
+                    <Layout />
+                  </PrivateRoute>
+                } 
+              >
+                <Route index element={<Contact />} />
+              </Route>
+              
+              <Route 
+                path="/payment" 
+                element={
+                  <PrivateRoute>
+                    <Layout />
+                  </PrivateRoute>
+                } 
+              >
+                <Route index element={<Payment />} />
+              </Route>
+            </Routes>
+          </AnimatePresence>
+        </div>
+      </Router>
+    </ErrorBoundary>
   );
 };
 
