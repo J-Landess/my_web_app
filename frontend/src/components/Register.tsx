@@ -37,7 +37,7 @@ const Register: React.FC = () => {
     try {
       const response = await authAPI.register(formData);
       localStorage.setItem('token', response.access_token);
-      navigate('/welcome');
+      navigate('/home');
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Registration failed');
     } finally {
@@ -62,7 +62,6 @@ const Register: React.FC = () => {
             textAlign: 'center', 
             marginBottom: '30px',
             color: 'var(--neon-cyan)',
-            textShadow: 'var(--glow-cyan)',
             fontSize: '2.5rem'
           }}
         >

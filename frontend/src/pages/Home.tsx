@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { authAPI, User } from '../api/api';
 
-const Welcome: React.FC = () => {
-  const navigate = useNavigate();
+const Home: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -24,11 +22,6 @@ const Welcome: React.FC = () => {
 
     fetchUser();
   }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
-  };
 
   if (loading) {
     return (
@@ -53,18 +46,6 @@ const Welcome: React.FC = () => {
       exit={{ opacity: 0, y: -20 }}
       className="container"
     >
-      {/* Navigation */}
-      <nav className="nav">
-        <div className="nav-container">
-          <div className="nav-brand">Wiseman Psychedelics</div>
-          <div className="nav-links">
-            <button onClick={handleLogout} className="btn btn-secondary">
-              Logout
-            </button>
-          </div>
-        </div>
-      </nav>
-
       {/* Welcome Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -331,4 +312,4 @@ const Welcome: React.FC = () => {
   );
 };
 
-export default Welcome;
+export default Home;

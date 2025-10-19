@@ -1,29 +1,74 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import './styles/theme.css';
+import './styles/navbar.css';
 import Register from './components/Register';
 import Login from './components/Login';
-import Welcome from './components/Welcome';
+import Layout from './components/Layout';
 import PrivateRoute from './components/PrivateRoute';
+import Home from './pages/Home';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import Payment from './pages/Payment';
 
 const App: React.FC = () => {
   return (
     <Router>
       <div className="App">
-        <Routes>
-          <Route path="/" element={<Navigate to="/login" replace />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route 
-            path="/welcome" 
-            element={
-              <PrivateRoute>
-                <Welcome />
-              </PrivateRoute>
-            } 
-          />
-        </Routes>
+        <AnimatePresence mode="wait">
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            
+            {/* Protected Routes with Layout */}
+            <Route 
+              path="/home" 
+              element={
+                <PrivateRoute>
+                  <Layout />
+                </PrivateRoute>
+              } 
+            >
+              <Route index element={<Home />} />
+            </Route>
+            
+            <Route 
+              path="/about" 
+              element={
+                <PrivateRoute>
+                  <Layout />
+                </PrivateRoute>
+              } 
+            >
+              <Route index element={<About />} />
+            </Route>
+            
+            <Route 
+              path="/contact" 
+              element={
+                <PrivateRoute>
+                  <Layout />
+                </PrivateRoute>
+              } 
+            >
+              <Route index element={<Contact />} />
+            </Route>
+            
+            <Route 
+              path="/payment" 
+              element={
+                <PrivateRoute>
+                  <Layout />
+                </PrivateRoute>
+              } 
+            >
+              <Route index element={<Payment />} />
+            </Route>
+          </Routes>
+        </AnimatePresence>
       </div>
     </Router>
   );

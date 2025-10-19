@@ -28,7 +28,7 @@ const Login: React.FC = () => {
     try {
       const response = await authAPI.login(formData);
       localStorage.setItem('token', response.access_token);
-      navigate('/welcome');
+      navigate('/home');
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Login failed');
     } finally {
@@ -53,7 +53,6 @@ const Login: React.FC = () => {
             textAlign: 'center', 
             marginBottom: '30px',
             color: 'var(--neon-cyan)',
-            textShadow: 'var(--glow-cyan)',
             fontSize: '2.5rem'
           }}
         >
