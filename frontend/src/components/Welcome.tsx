@@ -134,12 +134,12 @@ const Welcome: React.FC = () => {
             style={{ padding: '20px', textAlign: 'center' }}
           >
             <h3 style={{ color: 'var(--neon-lime)', marginBottom: '15px' }}>
-              The Nature of Consciousness
+              Consciousness Research Video 1
             </h3>
             <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
               <iframe
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                title="The Nature of Consciousness"
+                src="https://www.youtube.com/embed/Lf0YfMX_MFk"
+                title="Consciousness Research Video 1"
                 style={{
                   position: 'absolute',
                   top: 0,
@@ -154,7 +154,7 @@ const Welcome: React.FC = () => {
               />
             </div>
             <p style={{ marginTop: '15px', color: 'var(--text-secondary)' }}>
-              Exploring the fundamental questions about consciousness and awareness.
+              Exploring consciousness and awareness through scientific research.
             </p>
           </motion.div>
 
@@ -165,12 +165,12 @@ const Welcome: React.FC = () => {
             style={{ padding: '20px', textAlign: 'center' }}
           >
             <h3 style={{ color: 'var(--neon-cyan)', marginBottom: '15px' }}>
-              Psychedelics and the Mind
+              Consciousness Research Video 2
             </h3>
             <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
               <iframe
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                title="Psychedelics and the Mind"
+                src="https://www.youtube.com/embed/kxFTWk9lLDU?start=2992"
+                title="Consciousness Research Video 2"
                 style={{
                   position: 'absolute',
                   top: 0,
@@ -185,7 +185,7 @@ const Welcome: React.FC = () => {
               />
             </div>
             <p style={{ marginTop: '15px', color: 'var(--text-secondary)' }}>
-              Scientific research on psychedelics and their effects on consciousness.
+              Deep dive into consciousness studies and research findings.
             </p>
           </motion.div>
 
@@ -196,12 +196,12 @@ const Welcome: React.FC = () => {
             style={{ padding: '20px', textAlign: 'center' }}
           >
             <h3 style={{ color: 'var(--neon-purple)', marginBottom: '15px' }}>
-              Meditation and Awareness
+              Consciousness Research Video 3
             </h3>
             <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
               <iframe
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                title="Meditation and Awareness"
+                src="https://www.youtube.com/embed/fwZqVqbkyLM"
+                title="Consciousness Research Video 3"
                 style={{
                   position: 'absolute',
                   top: 0,
@@ -216,7 +216,7 @@ const Welcome: React.FC = () => {
               />
             </div>
             <p style={{ marginTop: '15px', color: 'var(--text-secondary)' }}>
-              Practices for developing mindfulness and expanded awareness.
+              Advanced research on consciousness and mind exploration.
             </p>
           </motion.div>
         </div>
