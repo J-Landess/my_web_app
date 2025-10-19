@@ -16,6 +16,11 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password: str
+    
+    def __init__(self, **data):
+        super().__init__(**data)
+        if len(self.password) > 72:
+            raise ValueError("Password cannot be longer than 72 characters")
 
 class UserLogin(BaseModel):
     email: EmailStr
