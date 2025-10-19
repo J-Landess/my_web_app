@@ -1,32 +1,15 @@
-from fastapi import FastAPI, Depends, HTTPException, status, Request
+from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from database import get_db, engine
 from models import Base
 from schemas import UserCreate, UserLogin, UserResponse, Token
 from auth import get_password_hash, verify_password, create_access_token, get_current_user, get_current_admin_user
-from security import (
-    setup_security_middleware, 
-    add_security_headers, 
-    validate_environment,
-    rate_limit_register,
-    rate_limit_login,
-    rate_limit_general
-)
 from models import User
-from slowapi import Limiter
-from slowapi.util import get_remote_address
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
-
-# Validate environment variables
-try:
-    env_config = validate_environment()
-    print(f"✅ Environment validated - Running in {env_config['ENVIRONMENT']} mode")
-except ValueError as e:
-    print(f"❌ Environment validation failed: {e}")
-    exit(1)
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -35,22 +18,20 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="Wiseman Psychedelics API", 
     version="1.0.0",
-    description="Consciousness research and psychedelic education platform API",
-    docs_url="/docs" if env_config["ENVIRONMENT"] == "development" else None,
-    redoc_url="/redoc" if env_config["ENVIRONMENT"] == "development" else None
+    description="Consciousness research and psychedelic education platform API"
 )
 
-# Initialize rate limiter
-limiter = Limiter(key_func=get_remote_address)
-app.state.limiter = limiter
-
-# Set up security middleware
-setup_security_middleware(app)
-add_security_headers(app)
+# CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "https://*.vercel.app"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/register", response_model=Token)
-@limiter.limit(rate_limit_register())
-def register(request: Request, user: UserCreate, db: Session = Depends(get_db)):
+def register(user: UserCreate, db: Session = Depends(get_db)):
     # Check if user already exists
     db_user = db.query(User).filter(User.email == user.email).first()
     if db_user:
@@ -84,8 +65,7 @@ def register(request: Request, user: UserCreate, db: Session = Depends(get_db)):
     return {"access_token": access_token, "token_type": "bearer"}
 
 @app.post("/login", response_model=Token)
-@limiter.limit(rate_limit_login())
-def login(request: Request, user: UserLogin, db: Session = Depends(get_db)):
+def login(user: UserLogin, db: Session = Depends(get_db)):
     # Authenticate user
     db_user = db.query(User).filter(User.email == user.email).first()
     if not db_user or not verify_password(user.password, db_user.hashed_password):
@@ -100,13 +80,11 @@ def login(request: Request, user: UserLogin, db: Session = Depends(get_db)):
     return {"access_token": access_token, "token_type": "bearer"}
 
 @app.get("/me", response_model=UserResponse)
-@limiter.limit(rate_limit_general())
-def read_users_me(request: Request, current_user: User = Depends(get_current_user)):
+def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
 
 @app.get("/newsletter")
-@limiter.limit(rate_limit_general())
-def get_newsletter_subscribers(request: Request, current_user: User = Depends(get_current_admin_user), db: Session = Depends(get_db)):
+def get_newsletter_subscribers(current_user: User = Depends(get_current_admin_user), db: Session = Depends(get_db)):
     subscribers = db.query(User).filter(User.is_subscribed == True).all()
     return subscribers
 
