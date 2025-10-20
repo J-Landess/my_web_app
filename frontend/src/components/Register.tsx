@@ -39,7 +39,9 @@ const Register: React.FC = () => {
       localStorage.setItem('token', response.access_token);
       navigate('/home');
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Registration failed');
+      console.error('Registration error:', err);
+      const errorMessage = err.response?.data?.detail || err.message || 'Registration failed';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
