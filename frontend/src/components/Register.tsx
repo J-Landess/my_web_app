@@ -34,13 +34,32 @@ const Register: React.FC = () => {
     setLoading(true);
     setError('');
 
+    // Client-side validation
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters long.');
+      setLoading(false);
+      return;
+    }
+    
+    if (formData.password.length > 72) {
+      setError('Password cannot be longer than 72 characters.');
+      setLoading(false);
+      return;
+    }
+    
+    if (formData.age < 18 || formData.age > 120) {
+      setError('Age must be between 18 and 120 years.');
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await authAPI.register(formData);
       localStorage.setItem('token', response.access_token);
       navigate('/home');
     } catch (err: any) {
       console.error('Registration error:', err);
-      const errorMessage = err.response?.data?.detail || err.message || 'Registration failed';
+      const errorMessage = err.userMessage || err.response?.data?.detail || err.message || 'Registration failed';
       setError(errorMessage);
     } finally {
       setLoading(false);

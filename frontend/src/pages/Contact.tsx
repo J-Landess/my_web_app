@@ -36,7 +36,9 @@ const Contact: React.FC = () => {
       setSubmitted(true);
       setFormData({ name: '', email: '', message: '' });
     } catch (err: any) {
-      setError('Failed to send message. Please try again.');
+      const errorMessage = err.userMessage || err.response?.data?.detail || err.message || 'Failed to send message. Please try again.';
+      setError(errorMessage);
+      console.error('Contact form error:', err);
     } finally {
       setLoading(false);
     }

@@ -13,7 +13,8 @@ const Home: React.FC = () => {
         const userData = await authAPI.getMe();
         setUser(userData);
       } catch (err: any) {
-        setError('Failed to load user data');
+        const errorMessage = err.userMessage || err.response?.data?.detail || err.message || 'Failed to load user data';
+        setError(errorMessage);
         console.error('Error fetching user:', err);
       } finally {
         setLoading(false);

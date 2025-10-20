@@ -30,7 +30,9 @@ const Login: React.FC = () => {
       localStorage.setItem('token', response.access_token);
       navigate('/home');
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Login failed');
+      console.error('Login error:', err);
+      const errorMessage = err.userMessage || err.response?.data?.detail || err.message || 'Login failed';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

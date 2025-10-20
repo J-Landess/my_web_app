@@ -23,14 +23,52 @@ api.interceptors.request.use(
   }
 );
 
-// Response interceptor to handle auth errors
+// Response interceptor to handle auth errors and provide better error messages
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    // Handle authentication errors
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
       window.location.href = '/login';
     }
+    
+    // Enhance error messages for common scenarios
+    if (error.response?.data?.detail) {
+      const detail = error.response.data.detail;
+      
+      // Map common backend errors to user-friendly messages
+      if (detail.includes('Email already registered')) {
+        error.userMessage = 'This email is already registered. Try logging in instead.';
+      } else if (detail.includes('Incorrect email or password')) {
+        error.userMessage = 'Invalid email or password. Please check your credentials.';
+      } else if (detail.includes('password cannot be longer than 72 characters')) {
+        error.userMessage = 'Password is too long. Please use 72 characters or less.';
+      } else if (detail.includes('Invalid email format')) {
+        error.userMessage = 'Please enter a valid email address.';
+      } else if (detail.includes('age must be between 18 and 120')) {
+        error.userMessage = 'Age must be between 18 and 120 years.';
+      } else if (detail.includes('name is required')) {
+        error.userMessage = 'Name is required.';
+      } else if (detail.includes('password is required')) {
+        error.userMessage = 'Password is required.';
+      } else if (detail.includes('email is required')) {
+        error.userMessage = 'Email is required.';
+      } else {
+        error.userMessage = detail;
+      }
+    } else if (error.code === 'NETWORK_ERROR' || error.message === 'Network Error') {
+      error.userMessage = 'Unable to connect to the server. Please check your internet connection.';
+    } else if (error.response?.status === 500) {
+      error.userMessage = 'Server error. Please try again later.';
+    } else if (error.response?.status === 404) {
+      error.userMessage = 'Service not found. Please contact support.';
+    } else if (error.response?.status === 403) {
+      error.userMessage = 'Access denied. You may not have permission for this action.';
+    } else {
+      error.userMessage = error.message || 'An unexpected error occurred.';
+    }
+    
     return Promise.reject(error);
   }
 );
