@@ -4,6 +4,7 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
+  timeout: 30000, // 30 seconds timeout for Render free tier
   headers: {
     'Content-Type': 'application/json',
   },
@@ -59,6 +60,8 @@ api.interceptors.response.use(
       }
     } else if (error.code === 'NETWORK_ERROR' || error.message === 'Network Error') {
       error.userMessage = 'Unable to connect to the server. Please check your internet connection.';
+    } else if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
+      error.userMessage = 'Request timed out. The server is taking longer than expected. Please try again.';
     } else if (error.response?.status === 500) {
       error.userMessage = 'Server error. Please try again later.';
     } else if (error.response?.status === 404) {
