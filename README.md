@@ -256,3 +256,4 @@ UPDATE users SET is_admin = 1 WHERE email = 'your-email@example.com';
 ## 📄 License
 
 This project is licensed under the MIT License.
+ 
